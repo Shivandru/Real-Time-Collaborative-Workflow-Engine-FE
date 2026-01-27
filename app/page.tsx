@@ -1,7 +1,9 @@
+"use client"
 import { Layout, Users, Zap } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Logo from "@/src/components/Logo";
+import { signOut } from "next-auth/react";
 
 export default function Home() {
   return (
@@ -10,9 +12,10 @@ export default function Home() {
       <header className="container mx-auto px-4 py-6 flex items-center justify-between">
       <Logo />
         <div className="flex items-center gap-4">
-          <Link href="/login">
-            <Button variant="ghost">Login</Button>
+          <Link href="/signup">
+            <Button variant="ghost">Sign Up</Button>
           </Link>
+          <Button variant="ghost" onClick={async ()=> await signOut({ redirect: false })}>Sign out</Button>
           <Link href="/signup">
             <Button>Get Started Free</Button>
           </Link>
