@@ -8,11 +8,6 @@ const handler = NextAuth({
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-            authorization: {
-                params: {
-                  prompt: "select_account",
-                },
-              },
           }),
           CredentialsProvider({
             name: "Credentials",
@@ -46,9 +41,27 @@ const handler = NextAuth({
     ],
     callbacks:{
         async session({ session, token }) {
+            session.user.email = token.email;
+            session.user.name = token.name;
+            session.user.image = token.picture;
+
+            session.user.userId = token.userId as string;
+            session.accessToken = token.accessToken as string; 
             return session
           },
+        async redirect() {
+            return "/home"
+        },
           async jwt({ token, user, account }) {
+            if (user) {
+                token.userId = (user as any).id;
+                token.name = user.name;
+                token.email = user.email;
+                token.picture = user.image;
+            }
+            if (account) {
+                token.accessToken = account.id_token || account.access_token;
+            }
               if ( account?.provider === "google" && user && !token.userId ) {
                 const url = generalFunction.createUrl("/user/signup");
                 const res = await fetch(url, {
@@ -63,13 +76,12 @@ const handler = NextAuth({
                 })
                 const data = await res.json();
                 token.userId = data.data.userId;
-                console.log("data from google signup", data);
             }
                 return token
           },
     },
     pages:{
-        signIn: '/dashboard',
+        signIn: '/signup',
     },
     session:{
         strategy: 'jwt',

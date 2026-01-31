@@ -15,6 +15,7 @@ import {
   Trello,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Logo from "@/src/components/Logo";
 
 interface WorkspaceSidebarProps {
   workspaces: Workspace[];
@@ -30,14 +31,7 @@ export function WorkspaceSidebar({
   return (
     <div className="w-64 border-r bg-muted/30 flex flex-col h-full">
       {/* Header */}
-      <div className="p-4 border-b">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-            <Trello className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <span className="font-bold text-lg">TaskFlow</span>
-        </div>
-      </div>
+        <Logo />
 
       {/* Navigation */}
       <ScrollArea className="flex-1">

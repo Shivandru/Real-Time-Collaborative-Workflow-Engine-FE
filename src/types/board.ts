@@ -1,3 +1,4 @@
+import * as z from "zod";
 export interface Task {
     id: string;
     title: string;
@@ -24,4 +25,21 @@ export interface Task {
     name: string;
     boards: Board[];
   }
+
+  export const createBoardSchema = z.object({
+    title: z.string(),
+    workspaceId: z.string(),
+    visibility: z.enum(["PRIVATE", "WORKSPACE"]).default("WORKSPACE"),
+    createdBy: z.string(),
+});
+
+export const boardSchema = createBoardSchema.extend({
+  boardId: z.string(),
+  createdAt: z.string(),
+})
+
+export type CreateBoard = z.infer<typeof createBoardSchema>;
+// export type Board = z.infer<typeof boardSchema>;
+
+
   
