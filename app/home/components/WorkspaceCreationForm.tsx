@@ -8,14 +8,17 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { CreateWorkspace, createWorkspaceSchema } from "@/types/workspace"
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
+import { generalFunction } from '@/src/lib/generalFuntion'
+import { SessionType } from '@/src/types/session'
+import { useCreateWorkspace } from '@/src/hooks/use-workspace'
 
 type WorkspaceCreationFormType = {
-    isOpen: boolean
-    onClose: () => void
+    isOpen: boolean;
+    onClose: () => void;
 }
 
 const WorkspaceCreationForm = ({ isOpen, onClose }: WorkspaceCreationFormType) => {
-  const { data } = useSession();
+  const { data: sessionData } = useSession();
   const { register, handleSubmit, formState: { errors }, reset } = useForm<CreateWorkspace>({
     resolver: zodResolver(createWorkspaceSchema),
     defaultValues: {
@@ -23,19 +26,23 @@ const WorkspaceCreationForm = ({ isOpen, onClose }: WorkspaceCreationFormType) =
       createdBy: "",
     }
   });
+  const {mutate: createWorkspace } = useCreateWorkspace();
 
   useEffect(()=>{
-    if(data){
+    if(sessionData){
       reset({
-        createdBy: data.user?.name
+        createdBy: sessionData.user?.email
       })
     }
-  },[data, reset])
+  },[sessionData, reset])
 
-  console.log("session data", data);
-
-  function onSubmit(data: CreateWorkspace) {
-    console.log(data);
+  function onSubmit(formData: CreateWorkspace) {
+    createWorkspace(formData, {
+      onSuccess: () => {
+        reset();
+        onClose();
+      }
+    });
   }
 
   return (

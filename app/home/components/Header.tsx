@@ -8,8 +8,8 @@ import { signOut } from "next-auth/react";
 const Header = () => {
     const router = useRouter();
   return (
-    <header className="border-b bg-card">
-        <div className="container mx-auto px-4 flex items-center justify-between">
+    <header className="border-b bg-card px-4 py-3">
+        <div className="flex items-center justify-between">
             <Logo/>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon">

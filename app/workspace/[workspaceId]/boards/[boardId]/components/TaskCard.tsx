@@ -1,8 +1,8 @@
-import { Task } from "@/src/types/board";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Task } from "@/src/types/tasks";
 
 interface TaskCardProps {
   task: Task;
@@ -45,12 +45,12 @@ export function TaskCard({ task }: TaskCardProps) {
           </Button>
         </div>
 
-        {task.dueDate && (
+        {/* {task.dueDate && (
           <div className="flex items-center gap-1 mt-2 text-muted-foreground">
             <Calendar className="h-3 w-3" />
             <span className="text-xs">{task.dueDate}</span>
           </div>
-        )}
+        )} */}
       </CardContent>
     </Card>
   );
